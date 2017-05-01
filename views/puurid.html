@@ -1,0 +1,21 @@
+<?php 
+	foreach($puurid as $puur=>$loom){
+	?>
+		<div>
+		Puuri number on <?php echo $puur; 
+		foreach($loom as $loom_pilt){
+		?></br>
+			<img src="<?php echo $loom_pilt["liik"];?>" alt="<?php echo $loom_pilt["nimi"];?>">
+			<?php		
+			}
+			?>
+		</div>
+	<?php		
+	}
+?>
+</div>
+<!--<pre>
+<?php print_r ($puurid);?>
+<?php print_r ($loom);?>
+<?php print_r ($loom_pilt);?>
+</pre>-->
