@@ -65,9 +65,29 @@ function kuva_puurid(){
 
 function lisa(){
 	// siia on vaja funktsionaalsust (13. nädalal)
-	
+	global $connection;
+	if (empty($_SESSION['user'])){
+		header("Location: ?page=login");
+	}
+	if ($_SERVER['REQUEST_METHOD']=='GET'){
+		include_once('views/loomavorm.html');
+	}
+	if ($_SERVER['REQUEST_METHOD']=='POST'){
+		if (empty($_POST['nimi'])){
+			$errors[]= "Nimi puudub!";
+		}
+		if (empty($_POST['vanus'])){
+			$errors[]= "Vanus puudub!";
+		}
+		if (empty($_POST['puur'])){
+			$errors[]= "Puuri number puudub!";
+		}
+		if (empty($_FILES["liik"]["name"])){
+			$errors[]= "Näopilt puudub!";
+		}
+
+	}
 	include_once('views/loomavorm.html');
-	
 }
 
 function upload($name){
