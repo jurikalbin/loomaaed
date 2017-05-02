@@ -13,8 +13,19 @@ function connect_db(){
 
 function logi(){
 	// siia on vaja funktsionaalsust (13. nädalal)
-
-	include_once('views/login.html');
+	global $connection;
+	if (!empty($_SESSION['user'])){
+		header("Location: ?page=loomad");
+	}
+	if (empty($_SERVER['REQUEST_METHOD']=="POST")){
+		if (isset($_POST['user']) && isset($_POST['password'])){
+			$kasutaja =  mysqli_real_escape_string($connection,htmlspecialchars($_POST['user']));
+			$parool = mysqli_real_escape_string($connection,htmlspecialchars($_POST['password']));
+			$sql = "SELECT * FROM 12103979_kylastajad WHERE username='$kasutaja' AND passw=SHA1('$parool')";
+			$result = mysqli_query($connection, $sql);
+			print_r ($result);
+		}
+	}
 }
 
 function logout(){
