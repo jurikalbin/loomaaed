@@ -51,6 +51,9 @@ function logout(){
 function kuva_puurid(){
 	global $connection;
 	// siia on vaja funktsionaalsust
+	if (empty($_SESSION['user'])){
+		header("Location: ?page=login");
+	}
 	$puurid=array();
 	$puuri_p2ring=mysqli_query($connection, "SELECT DISTINCT(puur) FROM 12103979_loomaaed ORDER BY puur ASC");
 	while($puuri_nr = mysqli_fetch_assoc($puuri_p2ring)){
@@ -85,7 +88,22 @@ function lisa(){
 		if (empty($_FILES["liik"]["name"])){
 			$errors[]= "Näopilt puudub!";
 		}
-
+		$nimi = mysqli_real_escape_string($connection, $_POST["nimi"]);
+		$vanus = mysqli_real_escape_string($connection, $_POST["vanus"]);
+		$puur = mysqli_real_escape_string($connection, $_POST["puur"]);
+		$liik = mysqli_real_escape_string($connection, "pildid/".$_FILES["liik"]["name"]);
+		if (empty($errors)){
+			echo "Erroreid ei ole!!";
+			$sql = "INSERT INTO 12103979_loomaaed  (nimi, vanus, puur, liik) VALUES ('$nimi', $vanus, $puur, '$liik')";
+			$result = mysqli_query($connection, $sql);
+			print_r ($sql);
+			if (mysqli_insert_id($connection) > 0){
+				echo "Lisamine õnnestus";
+				header("Location: ?page=lisa");
+			} else {
+				echo "Ei saanud lisada!";
+			}
+		}
 	}
 	include_once('views/loomavorm.html');
 }
