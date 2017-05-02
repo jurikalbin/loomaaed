@@ -22,16 +22,24 @@ function logi(){
 	}
 	if (empty($_POST['user']) || empty($_POST['pass'])){
 		$errors[]= "Kasutajanimi/Parool puudu!";
+		include_once('views/login.html');
 	}
-	if (empty($_SERVER['REQUEST_METHOD']=="POST")){
+	if ($_SERVER['REQUEST_METHOD']=="POST"){
 		if (isset($_POST['user']) && isset($_POST['pass'])){
 			$kasutaja =  mysqli_real_escape_string($connection,htmlspecialchars($_POST['user']));
 			$parool = mysqli_real_escape_string($connection,htmlspecialchars($_POST['pass']));
 			$sql = "SELECT * FROM 12103979_kylastajad WHERE username='$kasutaja' AND passw=SHA1('$parool')";
 			$result = mysqli_query($connection, $sql);
+			if (mysqli_num_rows($result) >= 1){
+				$_SESSION['user'] = mysqli_fetch_assoc($result);
+				header("Location: ?page=loomad");
+			}else{
+				$errors[]= "Kasutajat ei eksisteeri!";
+				include_once('views/login.html');
+			}
 		}
 	}
-	include_once('views/login.html');
+	
 }
 
 function logout(){
