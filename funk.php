@@ -93,15 +93,12 @@ function lisa(){
 		$puur = mysqli_real_escape_string($connection, $_POST["puur"]);
 		$liik = mysqli_real_escape_string($connection, "pildid/".$_FILES["liik"]["name"]);
 		if (empty($errors)){
-			echo "Erroreid ei ole!!";
 			$sql = "INSERT INTO 12103979_loomaaed  (nimi, vanus, puur, liik) VALUES ('$nimi', $vanus, $puur, '$liik')";
 			$result = mysqli_query($connection, $sql);
-			print_r ($sql);
 			if (mysqli_insert_id($connection) > 0){
-				echo "Lisamine õnnestus";
-				header("Location: ?page=lisa");
+				header("Location: ?page=loomad");
 			} else {
-				echo "Ei saanud lisada!";
+				$errors[]= "Ei õnnestunud lisada looma!";
 			}
 		}
 	}
