@@ -17,15 +17,21 @@ function logi(){
 	if (!empty($_SESSION['user'])){
 		header("Location: ?page=loomad");
 	}
+	if ($_SERVER['REQUEST_METHOD']=='GET'){
+		include_once('views/login.html');
+	}
+	if (empty($_POST['user']) || empty($_POST['pass'])){
+		$errors[]= "Kasutajanimi/Parool puudu!";
+	}
 	if (empty($_SERVER['REQUEST_METHOD']=="POST")){
-		if (isset($_POST['user']) && isset($_POST['password'])){
+		if (isset($_POST['user']) && isset($_POST['pass'])){
 			$kasutaja =  mysqli_real_escape_string($connection,htmlspecialchars($_POST['user']));
-			$parool = mysqli_real_escape_string($connection,htmlspecialchars($_POST['password']));
+			$parool = mysqli_real_escape_string($connection,htmlspecialchars($_POST['pass']));
 			$sql = "SELECT * FROM 12103979_kylastajad WHERE username='$kasutaja' AND passw=SHA1('$parool')";
 			$result = mysqli_query($connection, $sql);
-			print_r ($result);
 		}
 	}
+	include_once('views/login.html');
 }
 
 function logout(){
